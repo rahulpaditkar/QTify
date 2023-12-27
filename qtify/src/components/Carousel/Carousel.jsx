@@ -1,42 +1,34 @@
-import React from "react";
-import styles from "./Carousel.module.css";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import { Navigation } from "swiper/modules";
-import { useSwiper } from "swiper/react";
-import CarouselLeftNavigation from "./CarouselLeftNavigation/CarouselLeftNavigation";
-import CarouselRightNavigation from "./CarouselRightNavigation/CarouselRightNavigation";
-import { useEffect } from "react";
+import React, { useEffect } from 'react'
+import 'swiper/css'
+import {Navigation} from 'swiper/modules'
+import {Swiper,useSwiper,SwiperSlide} from 'swiper/react'
+import styles from './Carousel.module.css'
+import CarouselLeft from './CarouselLeft/CarouselLeft'
+import CarouselRight from './CarouselRight/CarouselRight'
 
-const Controls = ({ data }) => {
-	const { swiper } = useSwiper();
+const Controls = ({data}) => {
+    let swiper = useSwiper();
+    console.log(swiper)
+    useEffect(() => {
+        // swiper.slideTo(0)
+    },[data])
 
-	useEffect(() => {
-		swiper?.slideTo(0);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [data]);
+    return <></>
+}
 
-	return <></>;
-};
+const Carousel = ({data,renderCardComponent}) => {
+  return (
+    <div className={styles.wrapper}>
+        <Swiper initialSlide = {0} modules={{Navigation}} slidesPerView={'auto'} spaceBetween={40} allowTouchMove>
+            <Controls data={data} />
+            <CarouselLeft />
+            <CarouselRight />
+            {data.map(item => (
+                <SwiperSlide>{renderCardComponent(item)}</SwiperSlide>
+            ))}
+        </Swiper>
+    </div>
+  )
+}
 
-const Carousel = ({ data, renderCardComponent }) => {
-	return (
-		<div className={styles.wrapper}>
-			<Swiper
-				initialSlide={0}
-				modules={{ Navigation }}
-				slidesPerView={"auto"}
-				spaceBetween={10}
-				allowTouchMove>
-				<Controls data={data} />
-				<CarouselLeftNavigation />
-				<CarouselRightNavigation />
-				{data?.map((item) => (
-					<SwiperSlide key={item?.id}>{renderCardComponent(item)}</SwiperSlide>
-				))}
-			</Swiper>
-		</div>
-	);
-};
-
-export default Carousel;
+export default Carousel
